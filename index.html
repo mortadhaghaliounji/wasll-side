@@ -32,6 +32,18 @@
       <section class="panel-section advanced-section">
         <button class="advanced-toggle" id="appearance-toggle" type="button" aria-expanded="false" aria-controls="appearance-panel"><span><i class="bi bi-sliders2"></i> <span data-i18n="appearance">Apparence</span></span><i class="bi bi-chevron-down toggle-chevron"></i></button>
         <div class="advanced-panel" id="appearance-panel" hidden>
+          <label class="field-label" data-i18n="layout">Disposition</label>
+          <div class="layout-count" id="layout-wrap">
+            <button type="button" data-layout="auto" class="active"><i class="bi bi-magic"></i><span data-i18n="auto">Auto</span></button>
+            <button type="button" data-layout="1">1</button>
+            <button type="button" data-layout="2">2</button>
+            <button type="button" data-layout="3">3</button>
+          </div>
+          <label class="field-label" data-i18n="density">Densité</label>
+          <div class="density-count" id="density-wrap">
+            <button type="button" data-density="compact"><i class="bi bi-arrows-collapse"></i><span data-i18n="compact">Compacte</span></button>
+            <button type="button" data-density="normal" class="active"><i class="bi bi-arrows-expand"></i><span data-i18n="normal">Normale</span></button>
+          </div>
           <label class="field-label" data-i18n="boxes">Choix par question</label>
           <div class="choice-count" id="box-count-wrap"><button type="button" data-count="3">3</button><button type="button" data-count="4">4</button><button type="button" data-count="5" class="active">5</button><button type="button" data-count="6">6</button><button type="button" data-count="7">7</button></div>
           <div class="option-row"><div><strong data-i18n="numbers">Afficher les numéros</strong><span data-i18n="numbersHint">Afficher 1, 2, 3… dans les cases</span></div><label class="switch"><input type="checkbox" id="show-numbers" checked><span class="switch-track"></span></label></div>
