@@ -1,37 +1,154 @@
-/* WASLL Side — robust multi-column layout */
-#rows{width:100%;grid-template-columns:repeat(var(--question-cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows-per-col),auto);grid-auto-flow:column;column-gap:24px;row-gap:12px}
-.side-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;min-width:0;min-height:88px;padding:6px 0 10px}
-.side-row .side{min-width:0;gap:8px;padding:2px}
-.side-row .side-text{min-width:0;overflow:visible}
-.side-row .side-label,.side-row .side-detail{white-space:nowrap;word-break:normal;overflow-wrap:normal;hyphens:none;max-width:100%;overflow:hidden}
-.side-row .boxes{justify-self:center;display:flex;align-items:center;justify-content:center;gap:5px;min-width:max-content;padding:0 6px}
-.side-row .choice-box{flex:0 0 auto}
+/* WASLL Side — responsive poster layout
+   Principles:
+   - columns use minmax(0, 1fr) so content cannot blow out the grid
+   - question rows are containers, so typography follows the actual row width
+   - labels/details wrap naturally at word boundaries
+   - no JS font shrinking: CSS remains predictable while editing/exporting
+*/
+
+#rows{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(var(--question-cols),minmax(0,1fr));
+  grid-template-rows:repeat(var(--rows-per-col),auto);
+  grid-auto-flow:column;
+  column-gap:24px;
+  row-gap:12px;
+  align-items:start;
+}
+
+.side-row{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) max-content minmax(0,1fr);
+  align-items:center;
+  min-width:0;
+  min-height:88px;
+  padding:6px 0 10px;
+  break-inside:avoid;
+  page-break-inside:avoid;
+  container-type:inline-size;
+  container-name:question-row;
+}
+
+.side-row .side{
+  min-width:0;
+  width:100%;
+  gap:8px;
+  padding:2px;
+}
+
+.side-row .side.left{justify-content:flex-start}
+.side-row .side.right{justify-content:flex-end}
+
+.side-row .side-text{
+  min-width:0;
+  max-width:100%;
+  flex:1 1 auto;
+}
+
+.side-row .side-label,
+.side-row .side-detail{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  white-space:normal !important;
+  word-break:normal !important;
+  overflow-wrap:break-word !important;
+  hyphens:none !important;
+  overflow:visible;
+  text-overflow:clip;
+  text-wrap:pretty;
+}
+
+.side-row .side-label{
+  font-size:clamp(10px,1.8cqi,15px);
+  line-height:1.08;
+  font-weight:900;
+  letter-spacing:-.015em;
+}
+
+.side-row .side-detail{
+  font-size:clamp(7px,1.08cqi,9px);
+  line-height:1.22;
+  margin-top:4px;
+  color:#777;
+}
+
+/* Keep the editor visually calm: labels are allowed two lines, details two lines.
+   The full text remains available while editing. */
+.side-row .side-label:not(:focus),
+.side-row .side-detail:not(:focus){
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+}
+
+.side-row .side-label:focus,
+.side-row .side-detail:focus{
+  display:block;
+  overflow:visible;
+  white-space:normal !important;
+}
+
+.side-row .boxes{
+  justify-self:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(3px,.65cqi,8px);
+  min-width:max-content;
+  padding:0 clamp(4px,.8cqi,8px);
+}
+
+.side-row .choice-box{
+  flex:0 0 auto;
+  width:clamp(18px,6cqi,54px);
+  height:clamp(18px,6cqi,54px);
+  border-width:clamp(1.5px,.3cqi,3px);
+  font-size:clamp(7px,1.45cqi,13px);
+}
+
+.side-row .image-wrap,
+.side-row .side-image,
+.side-row .side-placeholder{
+  width:clamp(30px,8cqi,72px);
+  height:clamp(30px,8cqi,72px);
+  flex:0 0 clamp(30px,8cqi,72px);
+}
+
+.side-row .side{gap:clamp(4px,1.35cqi,12px)}
 .side-row .row-divider{left:0;right:0}
 
-/* Two-column mode: reserve enough width for content and keep controls compact. */
-:root[data-cols="2"] .side-row{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);min-height:78px}
-:root[data-cols="2"] .side-row .image-wrap,
-:root[data-cols="2"] .side-row .side-image,
-:root[data-cols="2"] .side-row .side-placeholder{width:42px;height:42px;flex-basis:42px}
-:root[data-cols="2"] .side-row .side{gap:6px}
-:root[data-cols="2"] .side-row .side-label{font-size:11px;line-height:1.12}
-:root[data-cols="2"] .side-row .side-detail{font-size:7.5px;line-height:1.2;margin-top:3px}
-:root[data-cols="2"] .side-row .boxes{gap:4px;padding:0 4px}
-:root[data-cols="2"] .side-row .choice-box{width:24px;height:24px;border-width:2px;font-size:9px}
+/* Auto mode: use the available width of the poster rather than viewport hacks. */
+:root[data-cols="1"] #rows{column-gap:0}
 
-/* Three-column mode is only for dense layouts; text remains one line and is auto-fitted. */
-:root[data-cols="3"] .side-row{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);min-height:58px}
-:root[data-cols="3"] .side-row .image-wrap,
-:root[data-cols="3"] .side-row .side-image,
-:root[data-cols="3"] .side-row .side-placeholder{width:28px;height:28px;flex-basis:28px}
-:root[data-cols="3"] .side-row .side{gap:4px;padding:1px}
-:root[data-cols="3"] .side-row .side-label{font-size:8px;line-height:1.1}
-:root[data-cols="3"] .side-row .side-detail{font-size:6px;line-height:1.15;margin-top:2px}
-:root[data-cols="3"] .side-row .boxes{gap:2px;padding:0 3px}
-:root[data-cols="3"] .side-row .choice-box{width:18px;height:18px;border-width:1.5px;font-size:7px}
+/* Two columns: preserve a generous reading width. */
+:root[data-cols="2"] #rows{column-gap:20px}
+:root[data-cols="2"] .side-row{min-height:82px}
 
-/* Override the old rules: never split labels because of spaces, punctuation or hyphens. */
-.side-label,.side-detail{white-space:nowrap !important;word-break:normal !important;overflow-wrap:normal !important;hyphens:none !important;}
+/* Three columns: only dense layouts should reach this mode. */
+:root[data-cols="3"] #rows{column-gap:16px}
+:root[data-cols="3"] .side-row{min-height:64px}
+:root[data-cols="3"] .side-row .side-label{line-height:1.06}
+:root[data-cols="3"] .side-row .side-detail{margin-top:2px}
 
-/* Keep editable text stable while the fit script adjusts font-size. */
-.side-label,.side-detail{display:block;max-width:100%;overflow:hidden;text-overflow:clip;}
+/* Very narrow poster columns: keep the choices centered and let side text wrap. */
+@container question-row (max-width:260px){
+  .side-row{grid-template-columns:minmax(0,1fr) max-content minmax(0,1fr)}
+  .side-row .side-label{font-size:10px}
+  .side-row .side-detail{font-size:7px}
+  .side-row .image-wrap,
+  .side-row .side-image,
+  .side-row .side-placeholder{width:30px;height:30px;flex-basis:30px}
+  .side-row .boxes{gap:3px;padding:0 4px}
+}
+
+/* On mobile, the preview remains usable rather than collapsing into microscopic columns. */
+@media (max-width:850px){
+  #rows{grid-template-columns:1fr !important;grid-template-rows:none;grid-auto-flow:row;row-gap:0}
+  .side-row{grid-template-columns:minmax(0,1fr) max-content minmax(0,1fr);min-height:78px}
+  .side-row .side-label{font-size:12px}
+  .side-row .side-detail{font-size:8px}
+}
