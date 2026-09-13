@@ -123,17 +123,19 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.add('exporting');
       syncLayout();
       poster.classList.add('export-poster');
-      poster.style.width='900px';
-      poster.style.minWidth='900px';
-      poster.style.maxWidth='900px';
-      poster.style.height='auto';
-      poster.style.overflow='visible';
-      poster.style.boxSizing='border-box';
+      const cols = columns();
+      const targetWidth = cols === 3 ? 1320 : cols === 2 ? 1080 : 900;
+      poster.style.width = `${targetWidth}px`;
+      poster.style.minWidth = `${targetWidth}px`;
+      poster.style.maxWidth = `${targetWidth}px`;
+      poster.style.height = 'auto';
+      poster.style.overflow = 'visible';
+      poster.style.boxSizing = 'border-box';
       await waitForImages(poster);
       if(document.fonts?.ready) await document.fonts.ready;
       await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-      const width=poster.scrollWidth||900;
-      const height=poster.scrollHeight;
+      const width = poster.scrollWidth || targetWidth;
+      const height = poster.scrollHeight;
       const canvas=await window.html2canvas(poster,{scale:3,width,height,windowWidth:Math.max(window.innerWidth,width),windowHeight:Math.max(window.innerHeight,height),useCORS:true,allowTaint:false,backgroundColor:null,logging:false,removeContainer:true,scrollX:0,scrollY:0,ignoreElements:el=>el.classList?.contains('row-controls')});
       const a=document.createElement('a');a.download=`wasll-side-${Date.now()}.png`;a.href=canvas.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();showStatus(t('export'));
     }catch(err){console.error(err);showStatus(t('exportError'))}

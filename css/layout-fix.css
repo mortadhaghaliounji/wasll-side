@@ -1,160 +1,347 @@
-/* WASLL Side — stable responsive question layout */
-#rows{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(var(--question-cols),minmax(0,1fr));
-  grid-template-rows:repeat(var(--rows-per-col),auto);
-  grid-auto-flow:column;
-  column-gap:24px;
-  row-gap:0;
-  align-items:start;
+/* WASLL Side — Clean Responsive Question Layout & Typography */
+
+:root {
+  --poster-width: 900px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.side-row{
-  position:relative;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) max-content minmax(0,1fr);
-  align-items:center;
-  min-width:0;
-  min-height:94px;
-  padding:8px 0 12px;
-  break-inside:avoid;
-  page-break-inside:avoid;
-  container-type:inline-size;
-  container-name:question-row;
+#canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px;
+  overflow: auto;
 }
 
-.side-row .side{
-  display:flex;
-  align-items:center;
-  min-width:0;
-  width:100%;
-  gap:10px;
-  padding:3px;
-}
-.side-row .side.left{justify-content:flex-start}
-.side-row .side.right{justify-content:flex-end}
-.side-row .side.right .side-text{text-align:right}
-
-.side-row .side-text{min-width:0;flex:1 1 auto;max-width:100%}
-.side-row .side-label,
-.side-row .side-detail{
-  display:block;
-  min-width:0;
-  max-width:100%;
-  white-space:normal !important;
-  word-break:normal !important;
-  overflow-wrap:break-word !important;
-  hyphens:none !important;
-  overflow:visible;
-  text-overflow:clip;
-}
-.side-row .side-label{
-  font-size:15px;
-  line-height:1.08;
-  font-weight:900;
-  letter-spacing:-.015em;
-  text-wrap:pretty;
-}
-.side-row .side-detail{
-  margin-top:4px;
-  font-size:9px;
-  line-height:1.22;
-  color:#777;
-  text-wrap:pretty;
+#canvas-paper {
+  width: max-content;
+  max-width: 100%;
+  margin: 0 auto;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+  transition: width 0.18s ease;
 }
 
-/* Long copy gets additional lines instead of becoming microscopic or disappearing. */
-.side-row .side-label:not(:focus){
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:3;
-  overflow:hidden;
-}
-.side-row .side-detail:not(:focus){
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  overflow:hidden;
-}
-.side-row .side-label:focus,
-.side-row .side-detail:focus{display:block;overflow:visible}
-
-.side-row .boxes{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-width:max-content;
-  gap:7px;
-  padding:0 8px;
-}
-.side-row .choice-box{
-  width:40px;
-  height:40px;
-  flex:0 0 40px;
-  border-width:2px;
-  font-size:11px;
+#poster {
+  width: 900px;
+  min-height: 1120px;
+  padding: 50px 48px 42px;
+  transition: width 0.18s ease;
 }
 
+/* 2 Columns: expand poster width to provide ample breathing room for text and photos */
+:root[data-cols="2"] #poster {
+  width: 1080px;
+  padding: 44px 38px 38px;
+}
+
+/* 3 Columns: wide poster format */
+:root[data-cols="3"] #poster {
+  width: 1320px;
+  padding: 40px 30px 34px;
+}
+
+/* Question Grid */
+#rows {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--question-cols, 1), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows-per-col, 1), auto);
+  grid-auto-flow: column;
+  column-gap: 32px;
+  row-gap: 12px;
+  align-items: stretch;
+  align-content: start;
+}
+
+:root[data-cols="2"] #rows {
+  column-gap: 26px;
+  row-gap: 10px;
+}
+
+:root[data-cols="3"] #rows {
+  column-gap: 20px;
+  row-gap: 8px;
+}
+
+/* Question Row: Middle column takes auto, left & right take equal remaining space */
+.side-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  align-items: center;
+  min-width: 0;
+  min-height: 84px;
+  padding: 8px 0 10px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.side-row+.side-row {
+  margin-top: 0;
+}
+
+/* Sides */
+.side-row .side {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  gap: 10px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background 0.12s;
+}
+
+.side-row .side:hover {
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.side-row .side.left {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.side-row .side.right {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  text-align: right;
+}
+
+.side-row .side.right .side-text {
+  text-align: right;
+}
+
+/* Text Container */
+.side-row .side-text {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: visible;
+}
+
+/* Side Label - Full text always visible, natural word wrapping without mid-word splits */
+.side-row .side-label {
+  display: block !important;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 14.5px;
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  text-wrap: pretty;
+  min-height: 18px;
+}
+
+/* Side Detail */
+.side-row .side-detail {
+  display: block !important;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 9.5px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #777;
+  margin-top: 3px;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  text-wrap: pretty;
+}
+
+/* Collapse empty detail when not in focus to maintain vertical centering */
+.side-row .side-detail:empty:not(:focus) {
+  display: none !important;
+  margin: 0;
+  min-height: 0;
+}
+
+/* Image Wrap & Placeholders */
 .side-row .image-wrap,
 .side-row .side-image,
-.side-row .side-placeholder{
-  width:60px;
-  height:60px;
-  flex:0 0 60px;
+.side-row .side-placeholder {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
 }
-.side-row .side-image,.side-row .side-placeholder{object-fit:contain}
-.side-row .row-divider{left:0;right:0}
 
-/* 2 columns: balanced, readable poster panels. */
-:root[data-cols="2"] #rows{column-gap:22px}
-:root[data-cols="2"] .side-row{min-height:84px}
-:root[data-cols="2"] .side-row .boxes{gap:4px;padding:0 6px}
-:root[data-cols="2"] .side-row .choice-box{width:26px;height:26px;flex-basis:26px;border-width:2px;font-size:9px}
+.side-row .side-image {
+  object-fit: contain;
+  border-radius: 4px;
+  display: block;
+}
+
+.side-row .side-placeholder {
+  border-radius: 4px;
+}
+
+/* Choice Boxes */
+.side-row .boxes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 10px;
+  min-width: max-content;
+  flex: 0 0 auto;
+}
+
+.side-row .choice-box {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border: 2.5px solid var(--black);
+  border-radius: 2px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.side-row .row-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+/* === 2 COLUMNS PROPORTIONS === */
+:root[data-cols="2"] .side-row {
+  min-height: 74px;
+  padding: 6px 0 8px;
+}
+
+:root[data-cols="2"] .side-row .side {
+  gap: 8px;
+  padding: 3px 4px;
+}
+
 :root[data-cols="2"] .side-row .image-wrap,
 :root[data-cols="2"] .side-row .side-image,
-:root[data-cols="2"] .side-row .side-placeholder{width:42px;height:42px;flex-basis:42px}
-:root[data-cols="2"] .side-row .side{gap:6px}
-:root[data-cols="2"] .side-row .side-label{font-size:11.5px;line-height:1.08}
-:root[data-cols="2"] .side-row .side-detail{font-size:7.5px;line-height:1.2}
-
-/* 3 columns: dense mode, but still readable. */
-:root[data-cols="3"] #rows{column-gap:16px}
-:root[data-cols="3"] .side-row{min-height:66px;padding:5px 0 8px}
-:root[data-cols="3"] .side-row .boxes{gap:2px;padding:0 4px}
-:root[data-cols="3"] .side-row .choice-box{width:18px;height:18px;flex-basis:18px;border-width:1.5px;font-size:6.5px}
-:root[data-cols="3"] .side-row .image-wrap,
-:root[data-cols="3"] .side-row .side-image,
-:root[data-cols="3"] .side-row .side-placeholder{width:26px;height:26px;flex-basis:26px}
-:root[data-cols="3"] .side-row .side{gap:4px;padding:1px}
-:root[data-cols="3"] .side-row .side-label{font-size:8.3px;line-height:1.08;-webkit-line-clamp:3}
-:root[data-cols="3"] .side-row .side-detail{font-size:6.3px;line-height:1.15;margin-top:2px;-webkit-line-clamp:2}
-
-/* Very narrow individual question cells: reduce controls before sacrificing text. */
-@container question-row (max-width:280px){
-  .side-row .boxes{gap:1px;padding:0 3px}
-  .side-row .choice-box{width:16px;height:16px;flex-basis:16px;font-size:6px;border-width:1.5px}
-  .side-row .image-wrap,
-  .side-row .side-image,
-  .side-row .side-placeholder{width:24px;height:24px;flex-basis:24px}
-  .side-row .side{gap:3px}
-  .side-row .side-label{font-size:8px}
-  .side-row .side-detail{font-size:6px}
+:root[data-cols="2"] .side-row .side-placeholder {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
 }
 
-/* Compact density trims vertical whitespace, never the readable text itself. */
-:root[data-density="compact"] #rows{row-gap:0}
-:root[data-density="compact"] .side-row{min-height:70px;padding-block:4px 8px}
-:root[data-density="compact"] .side-row .side-label{-webkit-line-clamp:3}
+:root[data-cols="2"] .side-row .side-label {
+  font-size: 12.5px;
+  line-height: 1.2;
+  font-weight: 800;
+}
 
-@media (max-width:850px){
-  #rows{grid-template-columns:1fr !important;grid-template-rows:none;grid-auto-flow:row;column-gap:0}
-  .side-row{min-height:82px}
-  .side-row .boxes{gap:4px;padding:0 6px}
-  .side-row .choice-box{width:28px;height:28px;flex-basis:28px}
-  .side-row .image-wrap,
-  .side-row .side-image,
-  .side-row .side-placeholder{width:40px;height:40px;flex-basis:40px}
-  .side-row .side-label{font-size:12px}
-  .side-row .side-detail{font-size:8px}
+:root[data-cols="2"] .side-row .side-detail {
+  font-size: 8.5px;
+  line-height: 1.22;
+  margin-top: 2px;
+}
+
+:root[data-cols="2"] .side-row .boxes {
+  gap: 4px;
+  padding: 0 6px;
+}
+
+:root[data-cols="2"] .side-row .choice-box {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-width: 2px;
+  font-size: 10px;
+}
+
+/* === 3 COLUMNS PROPORTIONS === */
+:root[data-cols="3"] .side-row {
+  min-height: 62px;
+  padding: 4px 0 6px;
+}
+
+:root[data-cols="3"] .side-row .side {
+  gap: 6px;
+  padding: 2px 3px;
+}
+
+:root[data-cols="3"] .side-row .image-wrap,
+:root[data-cols="3"] .side-row .side-image,
+:root[data-cols="3"] .side-row .side-placeholder {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+}
+
+:root[data-cols="3"] .side-row .side-label {
+  font-size: 10.5px;
+  line-height: 1.18;
+  font-weight: 800;
+}
+
+:root[data-cols="3"] .side-row .side-detail {
+  font-size: 7.5px;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+:root[data-cols="3"] .side-row .boxes {
+  gap: 3px;
+  padding: 0 4px;
+}
+
+:root[data-cols="3"] .side-row .choice-box {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-width: 1.5px;
+  font-size: 8px;
+}
+
+/* === COMPACT DENSITY MODE === */
+:root[data-density="compact"] #rows {
+  row-gap: 6px;
+}
+
+:root[data-density="compact"] .side-row {
+  min-height: 68px;
+  padding: 4px 0 6px;
+}
+
+:root[data-density="compact"][data-cols="2"] #rows {
+  row-gap: 5px;
+}
+
+:root[data-density="compact"][data-cols="2"] .side-row {
+  min-height: 60px;
+  padding: 3px 0 5px;
+}
+
+:root[data-density="compact"][data-cols="3"] #rows {
+  row-gap: 4px;
+}
+
+:root[data-density="compact"][data-cols="3"] .side-row {
+  min-height: 52px;
+  padding: 2px 0 4px;
+}
+
+/* Responsive screen styles for narrow editor viewports */
+@media (max-width: 850px) {
+  #canvas-wrap {
+    padding: 12px;
+    align-items: flex-start;
+  }
 }
