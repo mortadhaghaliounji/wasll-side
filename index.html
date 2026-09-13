@@ -12,154 +12,44 @@
 <body>
   <aside id="sidebar" aria-label="Éditeur Wasll Side">
     <div class="sidebar-head">
-      <div class="brand-row">
-        <div class="brand"><span class="brand-main">WASLL</span><span class="brand-sub">Side</span></div>
-        <button class="icon-btn sidebar-close" id="sidebar-close" type="button" aria-label="Fermer" title="Fermer">
-          <i class="bi bi-x-lg" aria-hidden="true"></i>
-        </button>
-      </div>
+      <div class="brand-row"><div class="brand"><span class="brand-main">WASLL</span><span class="brand-sub">Side</span></div><button class="icon-btn sidebar-close" id="sidebar-close" type="button" aria-label="Fermer"><i class="bi bi-x-lg"></i></button></div>
       <div class="sidebar-subtitle" data-i18n="builder">Which side are you on?</div>
-      <div class="language-switch" id="language-switch" aria-label="Language">
-        <button class="language-btn active" data-lang="fr" type="button">FR</button>
-        <button class="language-btn" data-lang="en" type="button">EN</button>
-      </div>
+      <div class="language-switch" id="language-switch"><button class="language-btn active" data-lang="fr" type="button">FR</button><button class="language-btn" data-lang="en" type="button">EN</button></div>
     </div>
-
     <div class="panel-scroll">
       <section class="panel-section">
-        <div class="section-heading">
-          <span class="section-label" data-i18n="content">Contenu</span>
-        </div>
+        <div class="section-label" data-i18n="content">Contenu</div>
+        <div class="canvas-tip"><i class="bi bi-hand-index-thumb"></i><span data-i18n="editOnCanvas">Cliquez directement sur le visuel pour le modifier.</span></div>
         <label class="field-label" for="title-input" data-i18n="title">Titre</label>
         <input class="text-input" id="title-input" value="De quel côté êtes-vous ?" maxlength="80" spellcheck="false">
-
         <label class="field-label" for="subtitle-input" data-i18n="subtitle">Sous-titre</label>
         <input class="text-input" id="subtitle-input" value="Which Side Are You On?" maxlength="100" spellcheck="false">
       </section>
-
       <section class="panel-section question-section">
-        <div class="section-heading">
-          <span class="section-label" data-i18n="questions">Questions</span>
-          <span class="count-badge" id="row-count">0</span>
-        </div>
-        <button class="panel-btn primary" id="add-row" type="button">
-          <i class="bi bi-plus-lg" aria-hidden="true"></i>
-          <span data-i18n="addRow">Ajouter une question</span>
-        </button>
+        <div class="section-heading"><span class="section-label" data-i18n="questions">Questions</span><span class="count-badge" id="row-count">0</span></div>
+        <button class="panel-btn primary" id="add-row" type="button"><i class="bi bi-plus-lg"></i><span data-i18n="addRow">Ajouter une question</span></button>
       </section>
-
       <section class="panel-section advanced-section">
-        <button class="advanced-toggle" id="appearance-toggle" type="button" aria-expanded="false" aria-controls="appearance-panel">
-          <span><i class="bi bi-sliders2" aria-hidden="true"></i> <span data-i18n="appearance">Apparence</span></span>
-          <i class="bi bi-chevron-down toggle-chevron" aria-hidden="true"></i>
-        </button>
+        <button class="advanced-toggle" id="appearance-toggle" type="button" aria-expanded="false" aria-controls="appearance-panel"><span><i class="bi bi-sliders2"></i> <span data-i18n="appearance">Apparence</span></span><i class="bi bi-chevron-down toggle-chevron"></i></button>
         <div class="advanced-panel" id="appearance-panel" hidden>
-          <label class="field-label" for="box-count" data-i18n="boxes">Choix par question</label>
-          <div class="choice-count" id="box-count-wrap">
-            <button type="button" data-count="3">3</button>
-            <button type="button" data-count="4">4</button>
-            <button type="button" data-count="5" class="active">5</button>
-            <button type="button" data-count="6">6</button>
-            <button type="button" data-count="7">7</button>
-          </div>
-
-          <div class="option-row">
-            <div>
-              <strong data-i18n="numbers">Afficher les numéros</strong>
-              <span data-i18n="numbersHint">Afficher 1, 2, 3… dans les cases</span>
-            </div>
-            <label class="switch" aria-label="Afficher les numéros">
-              <input type="checkbox" id="show-numbers" checked>
-              <span class="switch-track"></span>
-            </label>
-          </div>
-
-          <div class="option-row">
-            <div>
-              <strong data-i18n="branding">Marque WASLL</strong>
-              <span data-i18n="brandingHint">Afficher le watermark sur l’image</span>
-            </div>
-            <label class="switch" aria-label="Afficher la marque WASLL">
-              <input type="checkbox" id="show-brand" checked>
-              <span class="switch-track"></span>
-            </label>
-          </div>
-
-          <div class="color-grid">
-            <label class="color-item" for="accent-input">
-              <span data-i18n="accent">Accent</span>
-              <span class="color-value" id="accent-value">#D01020</span>
-              <input type="color" id="accent-input" value="#d01020">
-            </label>
-            <label class="color-item" for="bg-input">
-              <span data-i18n="background">Fond</span>
-              <span class="color-value" id="bg-value">#FAFAF8</span>
-              <input type="color" id="bg-input" value="#fafaf8">
-            </label>
-            <label class="color-item" for="ink-input">
-              <span data-i18n="ink">Texte</span>
-              <span class="color-value" id="ink-value">#0C0C0C</span>
-              <input type="color" id="ink-input" value="#0c0c0c">
-            </label>
-          </div>
+          <label class="field-label" data-i18n="boxes">Choix par question</label>
+          <div class="choice-count" id="box-count-wrap"><button type="button" data-count="3">3</button><button type="button" data-count="4">4</button><button type="button" data-count="5" class="active">5</button><button type="button" data-count="6">6</button><button type="button" data-count="7">7</button></div>
+          <div class="option-row"><div><strong data-i18n="numbers">Afficher les numéros</strong><span data-i18n="numbersHint">Afficher 1, 2, 3… dans les cases</span></div><label class="switch"><input type="checkbox" id="show-numbers" checked><span class="switch-track"></span></label></div>
+          <div class="option-row"><div><strong data-i18n="branding">Marque WASLL</strong><span data-i18n="brandingHint">Afficher le watermark sur l’image</span></div><label class="switch"><input type="checkbox" id="show-brand" checked><span class="switch-track"></span></label></div>
+          <div class="color-grid"><label class="color-item" for="accent-input"><span data-i18n="accent">Accent</span><span class="color-value" id="accent-value">#D01020</span><input type="color" id="accent-input" value="#d01020"></label><label class="color-item" for="bg-input"><span data-i18n="background">Fond</span><span class="color-value" id="bg-value">#FAFAF8</span><input type="color" id="bg-input" value="#fafaf8"></label><label class="color-item" for="ink-input"><span data-i18n="ink">Texte</span><span class="color-value" id="ink-value">#0C0C0C</span><input type="color" id="ink-input" value="#0c0c0c"></label></div>
         </div>
       </section>
-
-      <section class="help-row">
-        <i class="bi bi-info-circle" aria-hidden="true"></i>
-        <span data-i18n="helpText">Ajoutez une question, puis personnalisez chaque côté. Rien n’est prérempli.</span>
-      </section>
+      <section class="help-row"><i class="bi bi-info-circle"></i><span data-i18n="helpText">Cliquez sur un côté ou une image pour le personnaliser.</span></section>
     </div>
-
-    <div class="sidebar-actions">
-      <button class="action-btn" id="clear-all" type="button" title="Effacer tout">
-        <i class="bi bi-trash3" aria-hidden="true"></i>
-        <span data-i18n="clear">Effacer</span>
-      </button>
-    </div>
+    <div class="sidebar-actions"><button class="action-btn" id="clear-all" type="button"><i class="bi bi-trash3"></i><span data-i18n="clear">Effacer</span></button></div>
   </aside>
 
   <main id="workspace">
-    <header id="toolbar">
-      <div class="toolbar-brand"><span>WASLL</span><small>SIDE</small></div>
-      <div class="toolbar-actions">
-        <button class="toolbar-btn" id="undo-btn" type="button" aria-label="Annuler" title="Annuler" disabled>
-          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
-        </button>
-        <button class="toolbar-btn" id="mobile-settings" type="button" aria-label="Ouvrir les réglages" title="Réglages">
-          <i class="bi bi-sliders2" aria-hidden="true"></i>
-        </button>
-        <button class="toolbar-btn primary" id="toolbar-export" type="button">
-          <i class="bi bi-download" aria-hidden="true"></i>
-          <span data-i18n="export">Exporter PNG</span>
-        </button>
-      </div>
-    </header>
-
-    <div id="canvas-wrap">
-      <div id="canvas-paper">
-        <div id="poster">
-          <div class="poster-heading">
-            <h1 id="poster-title">De quel côté êtes-vous ?</h1>
-            <h2 id="poster-subtitle">Which Side Are You On?</h2>
-          </div>
-          <div id="rows"></div>
-          <div id="empty-state">
-            <div class="empty-icon"><i class="bi bi-plus-lg" aria-hidden="true"></i></div>
-            <strong data-i18n="emptyTitle">Aucune question</strong>
-            <span data-i18n="emptyText">Créez votre première question pour commencer.</span>
-            <button id="empty-add" class="empty-action" type="button">
-              <i class="bi bi-plus-lg" aria-hidden="true"></i>
-              <span data-i18n="addRow">Ajouter une question</span>
-            </button>
-          </div>
-          <div id="watermark">WASLL SIDE</div>
-        </div>
-      </div>
-    </div>
+    <header id="toolbar"><div class="toolbar-brand"><span>WASLL</span><small>SIDE</small></div><div class="toolbar-actions"><button class="toolbar-btn" id="undo-btn" type="button" aria-label="Annuler" title="Annuler" disabled><i class="bi bi-arrow-counterclockwise"></i></button><button class="toolbar-btn" id="mobile-settings" type="button" aria-label="Réglages" title="Réglages"><i class="bi bi-sliders2"></i></button><button class="toolbar-btn primary" id="toolbar-export" type="button"><i class="bi bi-download"></i><span data-i18n="export">Exporter PNG</span></button></div></header>
+    <div id="canvas-wrap"><div id="canvas-paper"><div id="poster"><div class="poster-heading"><div class="editable-heading" id="poster-title-edit" tabindex="0"><h1 id="poster-title">De quel côté êtes-vous ?</h1></div><div class="editable-heading" id="poster-subtitle-edit" tabindex="0"><h2 id="poster-subtitle">Which Side Are You On?</h2></div></div><div id="rows"></div><div id="empty-state"><div class="empty-icon"><i class="bi bi-plus-lg"></i></div><strong data-i18n="emptyTitle">Aucune question</strong><span data-i18n="emptyText">Créez votre première question pour commencer.</span><button id="empty-add" class="empty-action" type="button"><i class="bi bi-plus-lg"></i><span data-i18n="addRow">Ajouter une question</span></button></div><div id="watermark">WASLL SIDE</div></div></div></div>
   </main>
-
   <div id="mobile-overlay"></div>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
