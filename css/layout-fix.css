@@ -2,14 +2,13 @@
 #rows{width:100%;grid-template-columns:repeat(var(--question-cols),minmax(0,1fr));grid-template-rows:repeat(var(--rows-per-col),auto);grid-auto-flow:column;column-gap:24px;row-gap:12px}
 .side-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;min-width:0;min-height:88px;padding:6px 0 10px}
 .side-row .side{min-width:0;gap:8px;padding:2px}
-.side-row .side-text{min-width:0;overflow:hidden}
-.side-row .side-label{overflow-wrap:normal;word-break:normal;hyphens:auto;white-space:normal}
-.side-row .side-detail{overflow-wrap:normal;word-break:normal;hyphens:auto}
+.side-row .side-text{min-width:0;overflow:visible}
+.side-row .side-label,.side-row .side-detail{white-space:nowrap;word-break:normal;overflow-wrap:normal;hyphens:none;max-width:100%;overflow:hidden}
 .side-row .boxes{justify-self:center;display:flex;align-items:center;justify-content:center;gap:5px;min-width:max-content;padding:0 6px}
 .side-row .choice-box{flex:0 0 auto}
 .side-row .row-divider{left:0;right:0}
 
-/* Two-column mode: keep enough text width while shrinking only the decorative controls. */
+/* Two-column mode: reserve enough width for content and keep controls compact. */
 :root[data-cols="2"] .side-row{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);min-height:78px}
 :root[data-cols="2"] .side-row .image-wrap,
 :root[data-cols="2"] .side-row .side-image,
@@ -20,7 +19,7 @@
 :root[data-cols="2"] .side-row .boxes{gap:4px;padding:0 4px}
 :root[data-cols="2"] .side-row .choice-box{width:24px;height:24px;border-width:2px;font-size:9px}
 
-/* Three-column mode is reserved for layouts that can actually fit it. */
+/* Three-column mode is only for dense layouts; text remains one line and is auto-fitted. */
 :root[data-cols="3"] .side-row{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);min-height:58px}
 :root[data-cols="3"] .side-row .image-wrap,
 :root[data-cols="3"] .side-row .side-image,
@@ -31,5 +30,8 @@
 :root[data-cols="3"] .side-row .boxes{gap:2px;padding:0 3px}
 :root[data-cols="3"] .side-row .choice-box{width:18px;height:18px;border-width:1.5px;font-size:7px}
 
-/* Never break normal words just because a side is narrow. */
-.side-label,.side-detail{word-break:normal;overflow-wrap:break-word}
+/* Override the old rules: never split labels because of spaces, punctuation or hyphens. */
+.side-label,.side-detail{white-space:nowrap !important;word-break:normal !important;overflow-wrap:normal !important;hyphens:none !important;}
+
+/* Keep editable text stable while the fit script adjusts font-size. */
+.side-label,.side-detail{display:block;max-width:100%;overflow:hidden;text-overflow:clip;}
