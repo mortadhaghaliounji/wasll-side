@@ -51,19 +51,25 @@ document.addEventListener('DOMContentLoaded', () => {
   function deepClone(value) { return JSON.parse(JSON.stringify(value)); }
 
   function snapshot() {
-    return {
-      lang: state.lang, title: state.title, subtitle: state.subtitle, rows: deepClone(state.rows), nextId: state.nextId,
-      boxCount: state.boxCount, showNumbers: state.showNumbers, showBrand: state.showBrand, colors: deepClone(state.colors)
-    };
+    return deepClone(state);
   }
 
-  function pushHistory() {
-    const current = snapshot();
+  function pushHistory(snapshotToStore = snapshot()) {
     const previous = history.at(-1);
-    if (previous && JSON.stringify(previous) === JSON.stringify(current)) return;
-    history.push(current);
+    if (previous && JSON.stringify(previous) === JSON.stringify(snapshotToStore)) return;
+    history.push(deepClone(snapshotToStore));
     if (history.length > 50) history.shift();
     updateUndoButton();
+  }
+
+  function prepareInputHistory(input) {
+    if (input.dataset.historyPushed === 'true') return;
+    pushHistory();
+    input.dataset.historyPushed = 'true';
+  }
+
+  function releaseInputHistory(input) {
+    delete input.dataset.historyPushed;
   }
 
   function restore(previous) {
@@ -122,16 +128,15 @@ document.addEventListener('DOMContentLoaded', () => {
     posterSubtitle.textContent = state.subtitle.trim();
   }
 
-  titleInput.addEventListener('input', () => {
-    state.title = titleInput.value;
-    syncHeadings();
+  [titleInput, subtitleInput].forEach(input => {
+    input.addEventListener('focus', () => prepareInputHistory(input));
+    input.addEventListener('input', () => {
+      if (input === titleInput) state.title = titleInput.value;
+      else state.subtitle = subtitleInput.value;
+      syncHeadings();
+    });
+    input.addEventListener('blur', () => releaseInputHistory(input));
   });
-  titleInput.addEventListener('change', pushHistory);
-  subtitleInput.addEventListener('input', () => {
-    state.subtitle = subtitleInput.value;
-    syncHeadings();
-  });
-  subtitleInput.addEventListener('change', pushHistory);
 
   document.querySelectorAll('#language-switch .language-btn').forEach(btn => btn.addEventListener('click', () => {
     if (btn.dataset.lang === state.lang) return;
@@ -224,11 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
       rowsEl.appendChild(el);
 
       el.querySelectorAll('input[type="text"]').forEach(input => {
+        input.addEventListener('focus', () => prepareInputHistory(input));
         input.addEventListener('input', e => {
           row[e.target.dataset.field] = e.target.value;
           renderPreviewOnly(row, el);
         });
-        input.addEventListener('change', pushHistory);
+        input.addEventListener('blur', () => releaseInputHistory(input));
       });
       el.querySelectorAll('input[type="file"]').forEach(input => input.addEventListener('change', e => {
         const file = e.target.files?.[0];
@@ -282,26 +288,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   ['show-numbers', 'show-brand'].forEach(id => $(id).addEventListener('change', e => {
     pushHistory();
-    if (id === 'show-numbers') state.showNumbers = e.target.checked;
-    if (id === 'show-brand') {
+    if (id === 'show-numbers') {
+      state.showNumbers = e.target.checked;
+      renderRows();
+    } else {
       state.showBrand = e.target.checked;
       $('watermark').style.display = state.showBrand ? '' : 'none';
     }
-    if (id === 'show-numbers') renderRows();
   }));
 
-  function bindColor(id, key, output) {
-    $(id).addEventListener('input', e => {
-      root.style.setProperty(key, e.target.value);
+  function bindColor(id, cssVar, output, stateKey) {
+    const input = $(id);
+    input.addEventListener('focus', () => prepareInputHistory(input));
+    input.addEventListener('input', e => {
+      root.style.setProperty(cssVar, e.target.value);
       $(output).textContent = e.target.value.toUpperCase();
-      const stateKey = id === 'accent-input' ? 'accent' : id === 'bg-input' ? 'bg' : 'ink';
       state.colors[stateKey] = e.target.value;
     });
-    $(id).addEventListener('change', pushHistory);
+    input.addEventListener('blur', () => releaseInputHistory(input));
   }
-  bindColor('accent-input', '--red', 'accent-value');
-  bindColor('bg-input', '--white', 'bg-value');
-  bindColor('ink-input', '--black', 'ink-value');
+  bindColor('accent-input', '--red', 'accent-value', 'accent');
+  bindColor('bg-input', '--white', 'bg-value', 'bg');
+  bindColor('ink-input', '--black', 'ink-value', 'ink');
 
   const appearanceToggle = $('appearance-toggle');
   const appearancePanel = $('appearance-panel');
