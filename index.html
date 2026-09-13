@@ -4,66 +4,118 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#0c0c0c">
-  <meta name="description" content="Wasll Side — create your own Which Side Are You On? graphic.">
+  <meta name="description" content="Wasll Side — créez votre propre graphique Which Side Are You On?.">
   <title>Wasll Side</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <aside id="sidebar">
+  <aside id="sidebar" aria-label="Éditeur Wasll Side">
     <div class="sidebar-head">
-      <div class="brand"><span class="brand-main">WASLL</span><span class="brand-sub">Side</span></div>
+      <div class="brand-row">
+        <div class="brand"><span class="brand-main">WASLL</span><span class="brand-sub">Side</span></div>
+        <button class="icon-btn sidebar-close" id="sidebar-close" type="button" aria-label="Fermer" title="Fermer">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
       <div class="sidebar-subtitle" data-i18n="builder">Which side are you on?</div>
+      <div class="language-switch" id="language-switch" aria-label="Language">
+        <button class="language-btn active" data-lang="fr" type="button">FR</button>
+        <button class="language-btn" data-lang="en" type="button">EN</button>
+      </div>
     </div>
 
     <div class="panel-scroll">
       <section class="panel-section">
-        <div class="section-label" data-i18n="language">Language</div>
-        <div class="segmented" id="language-switch">
-          <button class="seg active" data-lang="fr">FR</button>
-          <button class="seg" data-lang="en">EN</button>
+        <div class="section-heading">
+          <span class="section-label" data-i18n="content">Contenu</span>
         </div>
+        <label class="field-label" for="title-input" data-i18n="title">Titre</label>
+        <input class="text-input" id="title-input" value="De quel côté êtes-vous ?" maxlength="80" spellcheck="false">
+
+        <label class="field-label" for="subtitle-input" data-i18n="subtitle">Sous-titre</label>
+        <input class="text-input" id="subtitle-input" value="Which Side Are You On?" maxlength="100" spellcheck="false">
       </section>
 
-      <section class="panel-section">
-        <div class="section-label" data-i18n="content">Content</div>
-        <label class="field-label" for="title-input" data-i18n="title">Title</label>
-        <input class="text-input" id="title-input" value="De quel côté êtes-vous ?" maxlength="80">
-        <label class="field-label" for="subtitle-input" data-i18n="subtitle">Subtitle</label>
-        <input class="text-input" id="subtitle-input" value="Which Side Are You On?" maxlength="100">
-        <div class="row-headline">
-          <span class="field-label" data-i18n="rows">Rows</span>
+      <section class="panel-section question-section">
+        <div class="section-heading">
+          <span class="section-label" data-i18n="questions">Questions</span>
           <span class="count-badge" id="row-count">0</span>
         </div>
-        <div class="button-row">
-          <button class="panel-btn primary" id="add-row">＋ <span data-i18n="addRow">Add a question</span></button>
+        <button class="panel-btn primary" id="add-row" type="button">
+          <i class="bi bi-plus-lg" aria-hidden="true"></i>
+          <span data-i18n="addRow">Ajouter une question</span>
+        </button>
+      </section>
+
+      <section class="panel-section advanced-section">
+        <button class="advanced-toggle" id="appearance-toggle" type="button" aria-expanded="false" aria-controls="appearance-panel">
+          <span><i class="bi bi-sliders2" aria-hidden="true"></i> <span data-i18n="appearance">Apparence</span></span>
+          <i class="bi bi-chevron-down toggle-chevron" aria-hidden="true"></i>
+        </button>
+        <div class="advanced-panel" id="appearance-panel" hidden>
+          <label class="field-label" for="box-count" data-i18n="boxes">Choix par question</label>
+          <div class="choice-count" id="box-count-wrap">
+            <button type="button" data-count="3">3</button>
+            <button type="button" data-count="4">4</button>
+            <button type="button" data-count="5" class="active">5</button>
+            <button type="button" data-count="6">6</button>
+            <button type="button" data-count="7">7</button>
+          </div>
+
+          <div class="option-row">
+            <div>
+              <strong data-i18n="numbers">Afficher les numéros</strong>
+              <span data-i18n="numbersHint">Afficher 1, 2, 3… dans les cases</span>
+            </div>
+            <label class="switch" aria-label="Afficher les numéros">
+              <input type="checkbox" id="show-numbers" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+
+          <div class="option-row">
+            <div>
+              <strong data-i18n="branding">Marque WASLL</strong>
+              <span data-i18n="brandingHint">Afficher le watermark sur l’image</span>
+            </div>
+            <label class="switch" aria-label="Afficher la marque WASLL">
+              <input type="checkbox" id="show-brand" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+
+          <div class="color-grid">
+            <label class="color-item" for="accent-input">
+              <span data-i18n="accent">Accent</span>
+              <span class="color-value" id="accent-value">#D01020</span>
+              <input type="color" id="accent-input" value="#d01020">
+            </label>
+            <label class="color-item" for="bg-input">
+              <span data-i18n="background">Fond</span>
+              <span class="color-value" id="bg-value">#FAFAF8</span>
+              <input type="color" id="bg-input" value="#fafaf8">
+            </label>
+            <label class="color-item" for="ink-input">
+              <span data-i18n="ink">Texte</span>
+              <span class="color-value" id="ink-value">#0C0C0C</span>
+              <input type="color" id="ink-input" value="#0c0c0c">
+            </label>
+          </div>
         </div>
       </section>
 
-      <section class="panel-section">
-        <div class="section-label" data-i18n="appearance">Appearance</div>
-        <label class="field-label" for="accent-input" data-i18n="accent">Accent</label>
-        <div class="color-control"><input type="color" id="accent-input" value="#d01020"><span id="accent-value">#D01020</span></div>
-        <label class="field-label" for="bg-input" data-i18n="background">Background</label>
-        <div class="color-control"><input type="color" id="bg-input" value="#fafaf8"><span id="bg-value">#FAFAF8</span></div>
-        <label class="field-label" for="ink-input" data-i18n="ink">Text</label>
-        <div class="color-control"><input type="color" id="ink-input" value="#0c0c0c"><span id="ink-value">#0C0C0C</span></div>
-        <label class="field-label" for="box-count" data-i18n="boxes">Choices per row</label>
-        <select class="text-input" id="box-count">
-          <option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option>
-        </select>
-        <label class="check-row"><input type="checkbox" id="show-numbers" checked><span data-i18n="numbers">Show choice numbers</span></label>
-        <label class="check-row"><input type="checkbox" id="show-brand" checked><span data-i18n="branding">Show WASLL branding</span></label>
-      </section>
-
-      <section class="panel-section">
-        <div class="section-label" data-i18n="help">How it works</div>
-        <p class="help-text" data-i18n="helpText">Add rows, then customize both sides with text and an image. Everything starts empty on purpose. Nothing is supplied by Wasll.</p>
+      <section class="help-row">
+        <i class="bi bi-info-circle" aria-hidden="true"></i>
+        <span data-i18n="helpText">Ajoutez une question, puis personnalisez chaque côté. Rien n’est prérempli.</span>
       </section>
     </div>
 
     <div class="sidebar-actions">
-      <button class="action-btn" id="clear-all" data-i18n="clear">Clear</button>
-      <button class="action-btn export" id="export-btn" data-i18n="export">Export PNG</button>
+      <button class="action-btn" id="clear-all" type="button" title="Effacer tout">
+        <i class="bi bi-trash3" aria-hidden="true"></i>
+        <span data-i18n="clear">Effacer</span>
+      </button>
     </div>
   </aside>
 
@@ -71,8 +123,16 @@
     <header id="toolbar">
       <div class="toolbar-brand"><span>WASLL</span><small>SIDE</small></div>
       <div class="toolbar-actions">
-        <button class="toolbar-btn" id="mobile-settings" aria-label="Settings">☰</button>
-        <button class="toolbar-btn primary" id="toolbar-export">↓ <span data-i18n="export">Export PNG</span></button>
+        <button class="toolbar-btn" id="undo-btn" type="button" aria-label="Annuler" title="Annuler" disabled>
+          <i class="bi bi-arrow-counterclockwise" aria-hidden="true"></i>
+        </button>
+        <button class="toolbar-btn" id="mobile-settings" type="button" aria-label="Ouvrir les réglages" title="Réglages">
+          <i class="bi bi-sliders2" aria-hidden="true"></i>
+        </button>
+        <button class="toolbar-btn primary" id="toolbar-export" type="button">
+          <i class="bi bi-download" aria-hidden="true"></i>
+          <span data-i18n="export">Exporter PNG</span>
+        </button>
       </div>
     </header>
 
@@ -85,9 +145,13 @@
           </div>
           <div id="rows"></div>
           <div id="empty-state">
-            <div class="empty-mark">＋</div>
-            <strong data-i18n="emptyTitle">Your canvas is empty</strong>
-            <span data-i18n="emptyText">Add your first question from the panel.</span>
+            <div class="empty-icon"><i class="bi bi-plus-lg" aria-hidden="true"></i></div>
+            <strong data-i18n="emptyTitle">Aucune question</strong>
+            <span data-i18n="emptyText">Créez votre première question pour commencer.</span>
+            <button id="empty-add" class="empty-action" type="button">
+              <i class="bi bi-plus-lg" aria-hidden="true"></i>
+              <span data-i18n="addRow">Ajouter une question</span>
+            </button>
           </div>
           <div id="watermark">WASLL SIDE</div>
         </div>
